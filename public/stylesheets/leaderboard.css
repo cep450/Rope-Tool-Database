@@ -1,0 +1,25 @@
+.leaderboard-chart {
+    margin:5px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.leaderboard-chart td, .leaderboard-chart th {
+    border: 1px solid purple;
+    padding: 8px;
+}   
+
+.leaderboard-chart th {
+    font-weight: bold;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: purple;
+    color: gold;
+}
+
+.leaderboard-chart tr:nth-child(even){background-color: #f2f2f2;}
+  
+.leaderboard-chart tr:hover {background-color: #ddd;}
+  

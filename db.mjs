@@ -7,10 +7,17 @@ const RTScoreSchema = new mongoose.Schema({
     bossTime: Number,       // in milliseconds, time from entering boss arena to boss defeated
     totalTime: Number,      // levelTime + bossTime 
     momentRecorded: Date,   // time and date this score was achieved, UTC
-    steamId: String,        // steamID if using steam, null if not
-    eventName: String       // name of exhibition if applicable, empty if none
+    steamId: String,        // steamID if using steam, defaults to '0' if not 
+    eventName: String       // name of exhibition if applicable, null if none
 });
 const RTScore = mongoose.model('RTScore', RTScoreSchema);
+
+const RTEventSchema = new mongoose.Schema({
+    name: String,
+    dateBegins: Date,
+    dateEnds: Date
+});
+const RTEvent = mongoose.model('RTEvent', RTEventSchema);
 
 console.log('Waiting for connection to database...')
 try {

@@ -49,8 +49,9 @@ app.get('/unitydata', (req, res) => {
 
 });*/
 
+//TODO can add authRequired like app.post('/article/add', authRequired, async (req, res) => {
 // recieve a click from unity games 
-app.post('/submitscore', (req, res) => {
+app.post('/submitscore', async (req, res) => {
 
     console.log('got a post request to /submitscore');
 
@@ -62,9 +63,88 @@ app.post('/submitscore', (req, res) => {
     ", \"totalTimeInMillis\": " + totalTimeInMillis +
     ", \"momentRecorded\": " + momentRecorded +
     ", \"steamId\": " + steamId +
-    ", \"eventName\": " + eventName + */
+    ", \"eventName\": " + eventName + 
+    
+    name: String,           // player name 
+    levelName: String,      // name of scene in unity 
+    levelTime: Number,      // in milliseconds, time from start of level to entering boss arena
+    bossTime: Number,       // in milliseconds, time from entering boss arena to boss defeated
+    totalTime: Number,      // levelTime + bossTime 
+    momentRecorded: Date,   // time and date this score was achieved, UTC
+    steamId: String,        // steamID if using steam, defaults to '0' if not 
+    eventName: String       // name of exhibition if applicable, null if none
+    
+    */
 
+    const response = {
+        status: "",
+        err: "",
+        eventValidation: ""
+    }
+
+    //TODO enforce & sanitize input 
+
+    // name/callsign: enforce 3 capital letters
+    var name = req.body.name;
+    //TODO
+
+    // level name: not enforced to allow for custom/workshop levels 
+    var levelName = req.body.levelName;
+    //TODO
+
+    // level time, boss time, total time: we convert these to the js time format
+    var levelTime = req.body.levelTimeInMillis;
+    var bossTime = req.body.bossTimeInMillis;
+    var totalTime = req.body.totalTimeInMillis;
+    //TODO
+    
+    // moment recorded: we convert this to the js date format 
+    var momentRecorded = req.body.momentRecorded;
+    //TODO
+
+    // steamid: 
+    var steamId = req.body.steamId;
+    //TODO
+
+    // event name: we enforce if an event is going on at this time and the score can be uploaded.
+    var eventName = req.body.eventName;
+    if(req.body.eventName == null) {
+        response.eventValidation = "NONE_PROVIDED";
+    } else {
+        //TODO 
+    }
     //TODO 
+
+    const score = new RTScore({
+        name: name,
+        levelName: levelName,
+        levelTime: levelTime,
+        bossTime: bossTime,
+        totalTime: totalTime,
+        momentRecorded: momentRecorded,
+        steamId: steamId,
+        eventName: eventName
+    });
+
+    try {
+        await score.save();
+        response.status = "success";
+    } catch(err) {
+        response.err = err.message;
+        if(err instanceof mongoose.Error.ValidationError) {
+            response.status = "validation error";
+        } else {
+            response.status = "error";
+            res.send(response);
+            throw err;
+        }
+    }
+
+    res.send(response);
+
+    //TODO could send a more organized response with more information 
+    // eventValidated: NONE_PROVIDED / OK / EVENT_DOES_NOT_EXIST / TIME_OUT_OF_RANGE
+    // event: "" / "Score submitted under event leaderboard!" / "Event does not exist in database! Score submitted, but not to this event." / "This event is not currently running! Score submitted, but not to this event."
 
 });
 
