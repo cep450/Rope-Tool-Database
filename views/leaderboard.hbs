@@ -1,0 +1,34 @@
+ <link rel="stylesheet" href="stylesheets/leaderboard.css">
+
+    <form method="GET" action="/leaderboard" class="search">
+        <input type="text" name="callsign" value="">
+        <input type="submit" name="" value="Search">
+    </form>
+
+    <table class="leaderboard-chart">
+        <tr>
+            <!-- TODO if this works- each header being a button to sort- do the rest as well
+                or just find a different better way of clicking on the tops of the list to sort the values
+            <th><form method="POST" action="/leaderboard" class="sort"><input type="submit" value="Callsign"></form></th>-->
+            <th>Callsign</th>
+            <!--<th>Steam</th>-->
+            <th>Level</th>
+            <th>Total Time</th>
+            <th>Level Time</th>
+            <th>Boss Time</th>
+            <th>Date</th>
+            <th>Event</th>
+        </tr>
+        {{#each scores}}
+        <tr>
+            <td>{{name}}</td>
+            <!-- TODO could potentially get a bunch of info from someone's steamId like username, icon -->
+            <td>{{levelName}}</td>
+            <td>{{totalTime}}</td>
+            <td>{{levelTime}}</td>
+            <td>{{bossTime}}</td>
+            <td>{{momentRecorded}}</td> <!-- TODO how to show this as a human-readable timestamp? -->
+            <td>{{eventName}}</td>
+        </tr>
+        {{/each}}
+    </table>

@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 
     console.log('got a get request to /');
 
-    res.render('home');
+    res.render('landing');
 
 });
 
@@ -76,6 +76,17 @@ app.get('/leaderboard', (req, res) => {
     //TODO get the data from the database
 
     /*
+    var scores = ???
+    if('callsign' in req.query) {
+        var searchTerm = req.query.callsign;
+        if(searchTerm.length > 0) {
+            scores = scoreData.filter(score => score.name.includes(searchTerm));
+        }
+    }
+
+    res.render('list', {scores: scores});*/
+
+    /*
     var p = //TOOD pull the object from the database 
     p.then((stats) => {
 
@@ -85,6 +96,13 @@ app.get('/leaderboard', (req, res) => {
         console.log(err);
         res.status(500).send('server error');
     });*/
+
+
+    //TODO we'll want to be able to filter and sort 
+    // filter by event and version of the game, maybe these appear as tabs 
+    // sort by best time
+
+    res.render('leaderboard');
 
 });
 
