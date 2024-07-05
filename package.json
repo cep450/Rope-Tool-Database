@@ -1,0 +1,27 @@
+{
+  "name": "rope-tool-database",
+  "version": "0.0.1",
+  "description": "Score database for taking Project Rope Tool to exhibitions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cep450/Rope-Tool-Database.git"
+  },
+  "author": "jaden",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cep450/Rope-Tool-Database/issues"
+  },
+  "homepage": "https://github.com/cep450/Rope-Tool-Database#readme",
+  "dependencies": {
+    "eslint": "^9.6.0",
+    "express": "^4.19.2",
+    "hbs": "^4.2.0",
+    "mongodb": "^6.8.0",
+    "mongoose": "^8.4.5",
+    "nodemon": "^3.1.4"
+  }
+}
