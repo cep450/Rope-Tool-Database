@@ -1,16 +1,17 @@
 
 
 .body {
-	margin-left:20px;
-	margin-right:20px;
+    margin: 120px 20px 20px;
+    border: 7px solid #bc691d;
+    border-style:outset;
 }
 
 .leaderboard-chart {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
+    border: 8px solid #bc691d;
+    border-style:inset;
     width: 100%;
-	border: 10px solid #bc691d;
-	border-style:ridge;
 	font-family: monospace;
 	font-size:20px;
 }
