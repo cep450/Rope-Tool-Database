@@ -1,6 +1,7 @@
 body {
     background-color:purple;
-    background-image:url('img/background.png');
+    background-image:url('../img/background.png');
+	background-attachment: fixed;
     color:white;
 }
 

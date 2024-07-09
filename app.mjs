@@ -2,6 +2,7 @@
 import express from 'express';
 import './db.mjs';
 import mongoose from 'mongoose';
+import expresshbs from 'express-handlebars';
 
 const app = express();
 
@@ -9,6 +10,8 @@ const RTScore = mongoose.model('RTScore');
 
 // configure templating to hbs
 app.set('view engine', 'hbs');
+
+var hbs = expresshbs.create({});
 
 // set up express static
 import url from 'url';
@@ -20,13 +23,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 // body parser (req.body)
 app.use(express.urlencoded({ extended: false }));
 
+// for debugging 
 function loggingMiddleware(req, res, next) {
+	/*
     console.log('Method: ' + req.method);
     console.log('Path: ' + req.path);
     console.log(req.query);
+	*/
     next();
 }
+
 app.use(loggingMiddleware);
+
+/*
+hbs.handlebars.registerHelper('times', function(n, block) {
+    var accum = '';
+    for(var i = 0; i < n; ++i)
+        accum += block.fn(i);
+    return accum;
+});*/
+
 
 // homepage 
 app.get('/', (req, res) => {
@@ -185,7 +201,6 @@ app.get('/leaderboard', (req, res) => {
     res.render('leaderboard');
 
 });
-
 
 app.listen(process.env.PORT || 3000);
 

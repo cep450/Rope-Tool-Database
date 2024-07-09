@@ -1,9 +1,11 @@
  <link rel="stylesheet" href="stylesheets/leaderboard.css">
 
+<!--
     <form method="GET" action="/leaderboard" class="search">
         <input type="text" name="callsign" value="">
         <input type="submit" name="" value="Search">
     </form>
+-->
 
     <table class="leaderboard-chart">
         <tr>
@@ -19,6 +21,8 @@
             <th>Date</th>
             <th>Event</th>
         </tr>
+
+	{{#if scores}}
         {{#each scores}}
         <tr>
             <td>{{name}}</td>
@@ -31,4 +35,169 @@
             <td>{{eventName}}</td>
         </tr>
         {{/each}}
+	{{else}}
+		<!-- appears only if null- for testing while not running database -->
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+				<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+		<tr>
+            <td>ABC</td>
+            <td>Level Name</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>00:00:00</td>
+            <td>Jan 1 1970</td>
+            <td>Imagine RIT 2024</td>
+        </tr>
+	{{/if}}
     </table>
