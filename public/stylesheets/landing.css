@@ -12,10 +12,12 @@
 	padding:15px;
 	margin:15px;
 	text-align:center;
-	background-color:rgb(0,0,0,0.75);
+}
+.landing-link {
+	background-color:rgb(0,0,0,0.80);
 	transition:ease-in-out 0.15s;
 }
-.landing-link a {
+.links-container a {
 	color:gold;
 	font-weight:bold;
 	text-decoration: none;
@@ -25,8 +27,7 @@
 	text-shadow: 0 0 0px #fff, 0 0 3px #fefd35; /* glowing text */
 	transition:ease-in-out 0.15s;
 }
-.landing-link a:hover {
+.links-container a:hover {
 	color: #fefd35;
-	
 	transition:ease-in-out 0.15s;
 }
