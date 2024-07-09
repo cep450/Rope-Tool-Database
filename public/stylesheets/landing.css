@@ -1,0 +1,32 @@
+
+.links-container {
+	max-width:500px;
+	margin:auto;
+}
+
+.landing-link {
+	font-family: monospace;
+	font-size:20px;
+	border-radius:10px;
+	border:2px solid gold;
+	padding:15px;
+	margin:15px;
+	text-align:center;
+	background-color:rgb(0,0,0,0.75);
+	transition:ease-in-out 0.15s;
+}
+.landing-link a {
+	color:gold;
+	font-weight:bold;
+	text-decoration: none;
+}
+.landing-link:hover {
+	background-color:rgb(0,0,0,0.95);
+	text-shadow: 0 0 0px #fff, 0 0 3px #fefd35; /* glowing text */
+	transition:ease-in-out 0.15s;
+}
+.landing-link a:hover {
+	color: #fefd35;
+	
+	transition:ease-in-out 0.15s;
+}

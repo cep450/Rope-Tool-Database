@@ -10,17 +10,36 @@ body {
     font-weight:bold;
     position:fixed;
     top:0;
+	left:0;
     height:80px;
     width:100%;
-    margin:10px;
+    padding:10px;
+	background-image: linear-gradient(to right, black, rgba(255,0,0,0));
+	font-family:'Courier New', Courier, monospace;
 }
-.header a {
+.header-link-container a {
     text-decoration: none;
+	color:white;
+}
+.header-link-container a:hover {
+	color: #fefd35;
+	text-shadow: 0 0 0px #fff, 0 0 4px #fefd35; /* glowing text */
+}
+
+.header-link-container {
+	float:right;
+	margin-right:40px;
+	text-align:center;
+	padding-top:46px;
 }
 
 .logo img {
     max-height: 100%;
     max-width: 100%;
+	color:08041e;
+	/*
+	filter: drop-shadow(0px 0px 3px #08041e);
+	filter: drop-shadow(0px 0px 5px #08041e); */
 }
 
 .body {

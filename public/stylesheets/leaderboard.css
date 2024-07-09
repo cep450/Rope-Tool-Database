@@ -17,7 +17,6 @@
 
 .leaderboard-chart td, .leaderboard-chart th {
     padding: 12px;
-	
 }   
 
 .leaderboard-chart th {
@@ -33,7 +32,6 @@
 .leaderboard-chart tr {
 	background-color:#201206;
 	color: #fefd35;
-
 	text-shadow: 0 0 0px #fff, 0 0 4px #fefd35; /* glowing text */
 }
 
