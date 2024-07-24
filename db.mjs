@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const RTScoreSchema = new mongoose.Schema({
+    gameVersion: String,    // version/build of game (e.g. if levels are updated)
     name: String,           // player name 
     levelName: String,      // name of scene in unity 
     levelTime: Number,      // in milliseconds, time from start of level to entering boss arena

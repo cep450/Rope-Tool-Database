@@ -58,6 +58,7 @@ app.post('/submitscore', async (req, res) => {
     
     /* 
     incoming data:
+    gameVersion
     "{ \"name\": " + name + 
     ", \"levelName\": " + levelName + 
     ", \"levelTimeInMillis\": " + levelTimeInMillis + 
@@ -69,6 +70,7 @@ app.post('/submitscore', async (req, res) => {
     plus a secret
     
     database:
+    gameVersion: String
     name: String,           // player name 
     levelName: String,      // name of scene in unity 
     levelTime: Number,      // in milliseconds, time from start of level to entering boss arena
@@ -88,6 +90,9 @@ app.post('/submitscore', async (req, res) => {
     //enforce & sanitize input 
 
     //TODO general sanitization
+
+    // game version: 
+    var gameVersion = req.body.gameVersion;
 
     // name/callsign: enforce 3 capital letters
     var name = req.body.name;
@@ -122,6 +127,7 @@ app.post('/submitscore', async (req, res) => {
     }
 
     const score = new RTScore({
+        gameVersion: gameVersion,
         name: name,
         levelName: levelName,
         levelTime: levelTime,
@@ -176,6 +182,7 @@ app.get('/leaderboard', (req, res) => {
         //format the data 
         scores.forEach((score, index, array) => {
             formattedScores[index] = {
+                gameVersion: score.gameVersion,
                 name: score.name,
                 levelName: score.levelName,
                 levelTime: new Date(array[index].levelTime).toISOString().slice(14,23),

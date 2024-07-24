@@ -19,6 +19,7 @@
             <th>Level Time</th>
             <th>Boss Time</th>
             <th>Date</th>
+            <th>Game Version</th>
             <th>Event</th>
         </tr>
 
@@ -31,102 +32,13 @@
             <td>{{totalTime}}</td>
             <td>{{levelTime}}</td>
             <td>{{bossTime}}</td>
-            <td>{{momentRecorded}}</td> <!-- TODO how to show this as a human-readable timestamp? -->
+            <td>{{momentRecorded}}</td>
+            <td>{{gameVersion}}</td>
             <td>{{eventName}}</td>
         </tr>
         {{/each}}
 	{{else}}
-		<!-- appears only if null- for testing while not running database -->
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-				<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
-		<tr>
-            <td>ABC</td>
-            <td>Level Name</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>00:00:00</td>
-            <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
-        </tr>
+		<!-- the following appears only if null- for testing while not running the database -->
 		<tr>
             <td>ABC</td>
             <td>Level Name</td>
