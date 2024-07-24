@@ -61,9 +61,16 @@ app.get('/unitydata', (req, res) => {
 app.post('/submitscore', async (req, res) => {
 
     console.log('got a post request to /submitscore');
+    console.log('the request was' + JSON.stringify(req.body));
 
-    //post will look like this: 
-    /* "{ \"name\": " + name + 
+    if(req.body.secret != process.env.SECRET) {
+        res.status(401).send("Unauthorized!");
+        return;
+    }
+    
+    /* 
+    incoming data:
+    "{ \"name\": " + name + 
     ", \"levelName\": " + levelName + 
     ", \"levelTimeInMillis\": " + levelTimeInMillis + 
     ", \"bossTimeInMillis\": " + bossTimeInMillis +
@@ -71,7 +78,9 @@ app.post('/submitscore', async (req, res) => {
     ", \"momentRecorded\": " + momentRecorded +
     ", \"steamId\": " + steamId +
     ", \"eventName\": " + eventName + 
+    plus a secret
     
+    database:
     name: String,           // player name 
     levelName: String,      // name of scene in unity 
     levelTime: Number,      // in milliseconds, time from start of level to entering boss arena
@@ -89,10 +98,14 @@ app.post('/submitscore', async (req, res) => {
         eventValidation: ""
     }
 
-    //TODO enforce & sanitize input 
+    //enforce & sanitize input 
+
+    //TODO general sanitization
 
     // name/callsign: enforce 3 capital letters
     var name = req.body.name;
+    name = name.toUpperCase();
+    name = name.substring(0,3);
     //TODO
 
     // level name: not enforced to allow for custom/workshop levels 
@@ -105,13 +118,12 @@ app.post('/submitscore', async (req, res) => {
     var totalTime = req.body.totalTimeInMillis;
     //TODO
     
-    // moment recorded: we convert this to the js date format 
+    // moment recorded: we convert this to the js date format - happens automatically!
     var momentRecorded = req.body.momentRecorded;
-    //TODO
 
     // steamid: 
     var steamId = req.body.steamId;
-    //TODO
+    //TODO check if there's any other data via SteamWorks we can use 
 
     // event name: we enforce if an event is going on at this time and the score can be uploaded.
     var eventName = req.body.eventName;
@@ -119,6 +131,8 @@ app.post('/submitscore', async (req, res) => {
         response.eventValidation = "NONE_PROVIDED";
     } else {
         //TODO 
+        // eventValidated: NONE_PROVIDED / OK / EVENT_DOES_NOT_EXIST / TIME_OUT_OF_RANGE
+        // event: "" / "Score submitted under event leaderboard!" / "Event does not exist in database! Score submitted, but not to this event." / "This event is not currently running! Score submitted, but not to this event."
     }
     //TODO 
 
@@ -149,10 +163,6 @@ app.post('/submitscore', async (req, res) => {
 
     res.send(response);
 
-    //TODO could send a more organized response with more information 
-    // eventValidated: NONE_PROVIDED / OK / EVENT_DOES_NOT_EXIST / TIME_OUT_OF_RANGE
-    // event: "" / "Score submitted under event leaderboard!" / "Event does not exist in database! Score submitted, but not to this event." / "This event is not currently running! Score submitted, but not to this event."
-
 });
 
 // display stats to someone viewing the webpage
@@ -161,35 +171,25 @@ app.get('/leaderboard', (req, res) => {
     console.log('got a get request to /leaderboard');
 
     //TODO get the data from the database
+    const p = RTScore.find();
+    p.then((scores) => {
+        res.render('leaderboard', {scores: scores});
+    })
+    .catch((err) => {
+        console.log(err);
+        res.status(500).send('server error');
+    });
 
     /*
-    var scores = ???
+    // TODO searching by callsign, ordering by best time, date uploaded, filtering by event, level, game version, ect 
     if('callsign' in req.query) {
         var searchTerm = req.query.callsign;
         if(searchTerm.length > 0) {
             scores = scoreData.filter(score => score.name.includes(searchTerm));
         }
     }
-
-    res.render('list', {scores: scores});*/
-
-    /*
-    var p = //TOOD pull the object from the database 
-    p.then((stats) => {
-
-        res.render('stats', {stats: stats});
-    })
-    .catch((err) => {
-        console.log(err);
-        res.status(500).send('server error');
-    });*/
-
-
-    //TODO we'll want to be able to filter and sort 
-    // filter by event and version of the game, maybe these appear as tabs 
-    // sort by best time
-
-    res.render('leaderboard');
+    res.render('leaderboard', {scores: scores});
+    */
 
 });
 
