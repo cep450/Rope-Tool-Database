@@ -44,18 +44,6 @@ app.get('/', (req, res) => {
 
 });
 
-/*
-// send current state to unity games requesting it
-app.get('/unitydata', (req, res) => {
-    
-    console.log('got a get request to /unitydata');
-
-    //TODO send back the current state 
-
-    res.render('stats'); 
-
-});*/
-
 //TODO can add authRequired like app.post('/article/add', authRequired, async (req, res) => {
 // recieve a click from unity games 
 app.post('/submitscore', async (req, res) => {
@@ -89,7 +77,6 @@ app.post('/submitscore', async (req, res) => {
     momentRecorded: Date,   // time and date this score was achieved, UTC
     steamId: String,        // steamID if using steam, defaults to '0' if not 
     eventName: String       // name of exhibition if applicable, null if none
-    
     */
 
     const response = {
@@ -106,19 +93,18 @@ app.post('/submitscore', async (req, res) => {
     var name = req.body.name;
     name = name.toUpperCase();
     name = name.substring(0,3);
-    //TODO
+    //TODO enforce letters no numbers or special symbols 
 
     // level name: not enforced to allow for custom/workshop levels 
     var levelName = req.body.levelName;
-    //TODO
+    //TODO do we want to limit to a # of characters?
 
     // level time, boss time, total time: we convert these to the js time format
     var levelTime = req.body.levelTimeInMillis;
     var bossTime = req.body.bossTimeInMillis;
     var totalTime = req.body.totalTimeInMillis;
-    //TODO
     
-    // moment recorded: we convert this to the js date format - happens automatically!
+    // moment recorded: automatically converted to the js date format
     var momentRecorded = req.body.momentRecorded;
 
     // steamid: 
@@ -134,7 +120,6 @@ app.post('/submitscore', async (req, res) => {
         // eventValidated: NONE_PROVIDED / OK / EVENT_DOES_NOT_EXIST / TIME_OUT_OF_RANGE
         // event: "" / "Score submitted under event leaderboard!" / "Event does not exist in database! Score submitted, but not to this event." / "This event is not currently running! Score submitted, but not to this event."
     }
-    //TODO 
 
     const score = new RTScore({
         name: name,
@@ -170,28 +155,57 @@ app.get('/leaderboard', (req, res) => {
 
     console.log('got a get request to /leaderboard');
 
-    //TODO get the data from the database
+    //get the data from the database
     const p = RTScore.find();
     p.then((scores) => {
-        res.render('leaderboard', {scores: scores});
+
+        //TODO searching/filtering 
+        // filter by: callsign, event, level, game version
+        // sort by: best time, date uploaded 
+        /*
+        if('callsign' in req.query) {
+            var searchTerm = req.query.callsign;
+            if(searchTerm.length > 0) {
+                scores = scoreData.filter(score => score.name.includes(searchTerm));
+            }
+        }
+        */
+
+        const formattedScores = new Array(scores.length);
+
+        //format the data 
+        scores.forEach((score, index, array) => {
+            formattedScores[index] = {
+                name: score.name,
+                levelName: score.levelName,
+                levelTime: new Date(array[index].levelTime).toISOString().slice(14,23),
+                bossTime: new Date(array[index].levelTime).toISOString().slice(14,23),
+                totalTime: new Date(array[index].levelTime).toISOString().slice(14,23),
+                momentRecorded: score.momentRecorded.toISOString().slice(0,10),
+                steamId: null, //TODO we would convert between the steamid and the username here 
+                eventName: score.eventName
+            }
+        });
+
+        res.render('leaderboard', {scores: formattedScores});
     })
     .catch((err) => {
         console.log(err);
         res.status(500).send('server error');
     });
-
-    /*
-    // TODO searching by callsign, ordering by best time, date uploaded, filtering by event, level, game version, ect 
-    if('callsign' in req.query) {
-        var searchTerm = req.query.callsign;
-        if(searchTerm.length > 0) {
-            scores = scoreData.filter(score => score.name.includes(searchTerm));
-        }
-    }
-    res.render('leaderboard', {scores: scores});
-    */
-
+    
 });
+
+/*
+// TODO send current state to unity games requesting it
+// TODO we could probably put some of the leaderboard stuff into functions to reuse for this
+app.get('/unitydata', (req, res) => {
+    
+    console.log('got a get request to /unitydata');
+
+    //TODO send back the current state  
+
+});*/
 
 app.listen(process.env.PORT || 3000);
 
