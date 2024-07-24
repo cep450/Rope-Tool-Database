@@ -89,32 +89,44 @@ app.post('/submitscore', async (req, res) => {
 
     //enforce & sanitize input 
 
-    //TODO general sanitization
-
     // game version: 
-    var gameVersion = req.body.gameVersion;
+    var gameVersion = enforceAlphanumeric(req.body.gameVersion);
 
     // name/callsign: enforce 3 capital letters
     var name = req.body.name;
+    name = enforceAlpha(name);
     name = name.toUpperCase();
     name = name.substring(0,3);
-    //TODO enforce letters no numbers or special symbols 
 
     // level name: not enforced to allow for custom/workshop levels 
-    var levelName = req.body.levelName;
+    var levelName = enforceAlphanumeric(req.body.levelName);
     //TODO do we want to limit to a # of characters?
 
     // level time, boss time, total time: we convert these to the js time format
     var levelTime = req.body.levelTimeInMillis;
     var bossTime = req.body.bossTimeInMillis;
     var totalTime = req.body.totalTimeInMillis;
+    if(!(typeof levelTime === 'Number') || !(typeof bossTime === 'Number') || !(typeof bossTime === 'Number')) { 
+        response.status = "Times were invalid!";
+        response.err = "Invalid input";
+        response.send();
+        return;
+    }
     
     // moment recorded: automatically converted to the js date format
     var momentRecorded = req.body.momentRecorded;
+    if(!(typeof momentRecorded === 'Date')) {
+        response.status = "Date recorded was invalid!";
+        response.err = "Invalid input";
+        response.send();
+        return;
+    }
 
     // steamid: 
-    var steamId = req.body.steamId;
+    //var steamId = req.body.steamId;
+    //TODO enforce the steamid format once we get steamworks set up.
     //TODO check if there's any other data via SteamWorks we can use 
+    var steamId = null;
 
     // event name: we enforce if an event is going on at this time and the score can be uploaded.
     var eventName = req.body.eventName;
@@ -122,8 +134,10 @@ app.post('/submitscore', async (req, res) => {
         response.eventValidation = "NONE_PROVIDED";
     } else {
         //TODO 
+        // check against the database of ongoing events
         // eventValidated: NONE_PROVIDED / OK / EVENT_DOES_NOT_EXIST / TIME_OUT_OF_RANGE
         // event: "" / "Score submitted under event leaderboard!" / "Event does not exist in database! Score submitted, but not to this event." / "This event is not currently running! Score submitted, but not to this event."
+        eventName = "";
     }
 
     const score = new RTScore({
@@ -213,6 +227,16 @@ app.get('/unitydata', (req, res) => {
     //TODO send back the current state  
 
 });*/
+
+// allow only letters, numbers, and spaces 
+function enforceAlphanumeric(str) {
+    return str.replace(/[^a-zA-Z0-9 ]/g, '');
+};
+
+// allow only letters 
+function enforceAlpha(str) {
+    return str.replace(/[^a-zA-Z]/g, '');
+};
 
 app.listen(process.env.PORT || 3000);
 
