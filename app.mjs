@@ -90,7 +90,7 @@ app.post('/submitscore', async (req, res) => {
     //enforce & sanitize input 
 
     // game version: 
-    var gameVersion = enforceAlphanumeric(req.body.gameVersion);
+    var gameVersion = enforceVersionName(req.body.gameVersion);
 
     // name/callsign: enforce 3 capital letters
     var name = req.body.name;
@@ -100,27 +100,16 @@ app.post('/submitscore', async (req, res) => {
 
     // level name: not enforced to allow for custom/workshop levels 
     var levelName = enforceAlphanumeric(req.body.levelName);
+    //TODO we should add an identifier for official vs workshop levels though. we can check against a list. & apply word filters
     //TODO do we want to limit to a # of characters?
 
     // level time, boss time, total time: we convert these to the js time format
-    var levelTime = req.body.levelTimeInMillis;
-    var bossTime = req.body.bossTimeInMillis;
-    var totalTime = req.body.totalTimeInMillis;
-    if(!(typeof levelTime === 'Number') || !(typeof bossTime === 'Number') || !(typeof bossTime === 'Number')) { 
-        response.status = "Times were invalid!";
-        response.err = "Invalid input";
-        response.send();
-        return;
-    }
+    var levelTime = enforceNumeric(req.body.levelTimeInMillis);
+    var bossTime = enforceNumeric(req.body.bossTimeInMillis);
+    var totalTime = enforceNumeric(req.body.totalTimeInMillis);
     
     // moment recorded: automatically converted to the js date format
-    var momentRecorded = req.body.momentRecorded;
-    if(!(typeof momentRecorded === 'Date')) {
-        response.status = "Date recorded was invalid!";
-        response.err = "Invalid input";
-        response.send();
-        return;
-    }
+    var momentRecorded = enforceNumeric(req.body.momentRecorded);
 
     // steamid: 
     //var steamId = req.body.steamId;
@@ -169,6 +158,10 @@ app.post('/submitscore', async (req, res) => {
     res.send(response);
 
 });
+function rejectScore(res, response) {
+    response.err = "Score data was invalid!";
+    res.status(400).send(response);
+}
 
 // display stats to someone viewing the webpage
 app.get('/leaderboard', (req, res) => {
@@ -230,13 +223,39 @@ app.get('/unitydata', (req, res) => {
 
 // allow only letters, numbers, and spaces 
 function enforceAlphanumeric(str) {
-    return str.replace(/[^a-zA-Z0-9 ]/g, '');
+    if(str) {
+        return str.replace(/[^a-zA-Z0-9 ]/g, '');
+    } else {
+        return "";
+    }
 };
 
 // allow only letters 
 function enforceAlpha(str) {
-    return str.replace(/[^a-zA-Z]/g, '');
+    if(str) {
+        return str.replace(/[^a-zA-Z]/g, '');
+    } else {
+        return "";
+    }
 };
+
+// allow only digits 
+function enforceNumeric(str) {
+    if(str) {
+        return str.replace(/[^0-9]/g, '');
+    } else {
+        return 0;
+    }
+}
+
+//version names that will include '.'
+function enforceVersionName(str) {
+    if(str) {
+        return str.replace(/[^a-zA-Z0-9 .]/g, '');
+    } else {
+        return 0;
+    }
+}
 
 app.listen(process.env.PORT || 3000);
 
