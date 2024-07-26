@@ -8,6 +8,12 @@ const app = express();
 
 const RTScore = mongoose.model('RTScore');
 
+// regex 
+const regAlphanumeric = new RegExp(/[^a-zA-Z0-9 ]/g);   // allow only letters, numbers, and spaces 
+const regAlpha = new RegExp(/[^a-zA-Z]/g);              // allow only letters 
+const regNumeric = new RegExp(/[^0-9]/g);               // allow only digits 
+const regVersionName = new RegExp(/[^a-zA-Z0-9 .]/g);   //version names that will include '.'
+
 // configure templating to hbs
 app.set('view engine', 'hbs');
 
@@ -59,25 +65,24 @@ app.post('/submitscore', async (req, res) => {
     /* 
     incoming data:
     gameVersion
-    "{ \"name\": " + name + 
-    ", \"levelName\": " + levelName + 
-    ", \"levelTimeInMillis\": " + levelTimeInMillis + 
-    ", \"bossTimeInMillis\": " + bossTimeInMillis +
-    ", \"totalTimeInMillis\": " + totalTimeInMillis +
-    ", \"momentRecorded\": " + momentRecorded +
-    ", \"steamId\": " + steamId +
-    ", \"eventName\": " + eventName + 
-    plus a secret
+    levelName 
+    levelTimeInMillis 
+    bossTimeInMillis 
+    totalTimeInMillis 
+    momentRecorded
+    steamId
+    eventName
+    secret 
     
     database:
-    gameVersion: String
-    name: String,           // player name 
-    levelName: String,      // name of scene in unity 
-    levelTime: Number,      // in milliseconds, time from start of level to entering boss arena
-    bossTime: Number,       // in milliseconds, time from entering boss arena to boss defeated
-    totalTime: Number,      // levelTime + bossTime 
-    momentRecorded: Date,   // time and date this score was achieved, UTC
-    steamId: String,        // steamID if using steam, defaults to '0' if not 
+    gameVersion: String     // game version representing a released build
+    name: String            // player name 
+    levelName: String       // name of scene in unity 
+    levelTime: Number       // in milliseconds, time from start of level to entering boss arena
+    bossTime: Number        // in milliseconds, time from entering boss arena to boss defeated
+    totalTime: Number       // levelTime + bossTime 
+    momentRecorded: Date    // time and date this score was achieved, UTC
+    steamId: String         // steamID if using steam, defaults to '0' if not 
     eventName: String       // name of exhibition if applicable, null if none
     */
 
@@ -90,26 +95,26 @@ app.post('/submitscore', async (req, res) => {
     //enforce & sanitize input 
 
     // game version: 
-    var gameVersion = enforceVersionName(req.body.gameVersion);
+    var gameVersion = enforceRegex(req.body.gameVersion, regVersionName);
 
     // name/callsign: enforce 3 capital letters
     var name = req.body.name;
-    name = enforceAlpha(name);
+    name = enforceRegex(name, regAlpha);
     name = name.toUpperCase();
     name = name.substring(0,3);
 
     // level name: not enforced to allow for custom/workshop levels 
-    var levelName = enforceAlphanumeric(req.body.levelName);
+    var levelName = enforceRegex(req.body.levelName, regAlphanumeric);
     //TODO we should add an identifier for official vs workshop levels though. we can check against a list. & apply word filters
     //TODO do we want to limit to a # of characters?
 
     // level time, boss time, total time: we convert these to the js time format
-    var levelTime = enforceNumeric(req.body.levelTimeInMillis);
-    var bossTime = enforceNumeric(req.body.bossTimeInMillis);
-    var totalTime = enforceNumeric(req.body.totalTimeInMillis);
+    var levelTime = enforceRegex(req.body.levelTimeInMillis, regNumeric);
+    var bossTime = enforceRegex(req.body.bossTimeInMillis, regNumeric);
+    var totalTime = enforceRegex(req.body.totalTimeInMillis, regNumeric);
     
     // moment recorded: automatically converted to the js date format
-    var momentRecorded = enforceNumeric(req.body.momentRecorded);
+    var momentRecorded = enforceRegex(req.body.momentRecorded, regNumeric);
 
     // steamid: 
     //var steamId = req.body.steamId;
@@ -193,8 +198,8 @@ app.get('/leaderboard', (req, res) => {
                 name: score.name,
                 levelName: score.levelName,
                 levelTime: new Date(array[index].levelTime).toISOString().slice(14,23),
-                bossTime: new Date(array[index].levelTime).toISOString().slice(14,23),
-                totalTime: new Date(array[index].levelTime).toISOString().slice(14,23),
+                bossTime: new Date(array[index].bossTime).toISOString().slice(14,23),
+                totalTime: new Date(array[index].totalTime).toISOString().slice(14,23),
                 momentRecorded: score.momentRecorded.toISOString().slice(0,10),
                 steamId: null, //TODO we would convert between the steamid and the username here 
                 eventName: score.eventName
@@ -221,41 +226,13 @@ app.get('/unitydata', (req, res) => {
 
 });*/
 
-// allow only letters, numbers, and spaces 
-function enforceAlphanumeric(str) {
+function enforceRegex(str, regex) {
     if(str) {
-        return str.replace(/[^a-zA-Z0-9 ]/g, '');
+        return str.replace(regex, '');
     } else {
         return "";
     }
 };
-
-// allow only letters 
-function enforceAlpha(str) {
-    if(str) {
-        return str.replace(/[^a-zA-Z]/g, '');
-    } else {
-        return "";
-    }
-};
-
-// allow only digits 
-function enforceNumeric(str) {
-    if(str) {
-        return str.replace(/[^0-9]/g, '');
-    } else {
-        return 0;
-    }
-}
-
-//version names that will include '.'
-function enforceVersionName(str) {
-    if(str) {
-        return str.replace(/[^a-zA-Z0-9 .]/g, '');
-    } else {
-        return 0;
-    }
-}
 
 app.listen(process.env.PORT || 3000);
 
