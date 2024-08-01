@@ -19,8 +19,12 @@
             <th>Level Time</th>
             <th>Boss Time</th>
             <th>Date</th>
-            <th>Game Version</th>
-            <th>Event</th>
+            
+			{{#if dev}}
+				<th>Game Version</th>
+				<th>Contact</th>
+			{{/if}}
+            <!--<th>Event</th>0-->
         </tr>
 
 	{{#if scores}}
@@ -33,8 +37,10 @@
             <td>{{levelTime}}</td>
             <td>{{bossTime}}</td>
             <td>{{momentRecorded}}</td>
-            <td>{{gameVersion}}</td>
-            <td>{{eventName}}</td>
+            {{#if dev}}
+				<td>{{gameVersion}}</td>
+				<td>{{contact}}</td>
+			{{/if}}
         </tr>
         {{/each}}
 	{{else}}
@@ -46,7 +52,11 @@
             <td>00:00:00</td>
             <td>00:00:00</td>
             <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
+			{{#if dev}}
+				<td>Imagine RIT 2024</td>
+				<td>contact string</td>
+			{{/if}}
+            
         </tr>
 		<tr>
             <td>ABC</td>
@@ -55,7 +65,10 @@
             <td>00:00:00</td>
             <td>00:00:00</td>
             <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
+            {{#if dev}}
+				<td>Imagine RIT 2024</td>
+				<td>contact string</td>
+			{{/if}}
         </tr>
 	{{/if}}
     </table>

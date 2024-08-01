@@ -9,7 +9,7 @@ const RTScoreSchema = new mongoose.Schema({
     totalTime: Number,      // levelTime + bossTime 
     momentRecorded: Date,   // time and date this score was achieved, UTC
     steamId: String,        // steamID if using steam, defaults to '0' if not 
-    eventName: String       // name of exhibition if applicable, null if none
+    contact: String       	// for events with prizes 
 });
 const RTScore = mongoose.model('RTScore', RTScoreSchema);
 
