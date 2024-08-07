@@ -12,7 +12,8 @@ const RTScore = mongoose.model('RTScore');
 const regAlphanumeric = new RegExp(/[^a-zA-Z0-9 ]/g);   // allow only letters, numbers, and spaces 
 const regAlpha = new RegExp(/[^a-zA-Z]/g);              // allow only letters 
 const regNumeric = new RegExp(/[^0-9]/g);               // allow only digits 
-const regVersionName = new RegExp(/[^a-zA-Z0-9 .]/g);   //version names that will include '.'
+const regVersionName = new RegExp(/[^a-zA-Z0-9 .]/g);   // version names that will include '.'
+const regContact = new RegExp(/[^a-zA-Z0-9._]/g);		// username validation
 
 // configure templating to hbs
 app.set('view engine', 'hbs');
@@ -213,7 +214,7 @@ app.get('/leaderboard', (req, res) => {
                 totalTime: new Date(array[index].totalTime).toISOString().slice(14,23),
                 momentRecorded: score.momentRecorded.toISOString().slice(0,10),
                 steamId: null, //TODO we would convert between the steamid and the username here 
-                eventName: score.eventName
+				contact: score.contact
             }
         });
 

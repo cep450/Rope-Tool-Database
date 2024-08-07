@@ -19,7 +19,6 @@
             <th>Level Time</th>
             <th>Boss Time</th>
             <th>Date</th>
-            
 			{{#if dev}}
 				<th>Game Version</th>
 				<th>Contact</th>
@@ -28,21 +27,34 @@
         </tr>
 
 	{{#if scores}}
-        {{#each scores}}
-        <tr>
-            <td>{{name}}</td>
-            <!-- TODO could potentially get a bunch of info from someone's steamId like username, icon -->
-            <td>{{levelName}}</td>
-            <td>{{totalTime}}</td>
-            <td>{{levelTime}}</td>
-            <td>{{bossTime}}</td>
-            <td>{{momentRecorded}}</td>
-            {{#if dev}}
+		{{#if dev}}
+			{{#each scores}}
+			<tr>
+				<td>{{name}}</td>
+				<!-- TODO could potentially get a bunch of info from someone's steamId like username, icon -->
+				<td>{{levelName}}</td>
+				<td>{{totalTime}}</td>
+				<td>{{levelTime}}</td>
+				<td>{{bossTime}}</td>
+				<td>{{momentRecorded}}</td>
 				<td>{{gameVersion}}</td>
 				<td>{{contact}}</td>
-			{{/if}}
-        </tr>
-        {{/each}}
+			</tr>
+			{{/each}}
+		{{else}}
+			{{#each scores}}
+			<tr>
+				<td>{{name}}</td>
+				<!-- TODO could potentially get a bunch of info from someone's steamId like username, icon -->
+				<td>{{levelName}}</td>
+				<td>{{totalTime}}</td>
+				<td>{{levelTime}}</td>
+				<td>{{bossTime}}</td>
+				<td>{{momentRecorded}}</td>
+			</tr>
+			{{/each}}
+		{{/if}}
+        
 	{{else}}
 		<!-- the following appears only if null- for testing while not running the database -->
 		<tr>
