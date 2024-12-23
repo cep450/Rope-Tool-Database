@@ -63,27 +63,17 @@ app.post('/submitscore', async (req, res) => {
     }
     
     /* 
-    incoming data:
-    gameVersion
-    levelName 
-    levelTimeInMillis 
-    bossTimeInMillis 
-    totalTimeInMillis 
-    momentRecorded
-    steamId
-    eventName
+    incoming data:      database:
+    gameVersion         gameVersion: String     // game version representing a released build
+    name                name: String            // player name, 3 letters arcade style
+    levelName           levelName: String       // name of scene in unity 
+    levelTimeInMillis   levelTime: Number       // in milliseconds, time from start of level to entering boss arena
+    bossTimeInMillis    bossTime: Number        // in milliseconds, time from entering boss arena to boss defeated
+    totalTimeInMillis   totalTime: Number       // levelTime + bossTime 
+    momentRecorded      momentRecorded: Date    // time and date this score was achieved, UTC
+    steamId             steamId: String         // steamID if using steam, defaults to '0' if not 
+    eventName           eventName: String       // name of exhibition if applicable, null if none
     secret 
-    
-    database:
-    gameVersion: String     // game version representing a released build
-    name: String            // player name 
-    levelName: String       // name of scene in unity 
-    levelTime: Number       // in milliseconds, time from start of level to entering boss arena
-    bossTime: Number        // in milliseconds, time from entering boss arena to boss defeated
-    totalTime: Number       // levelTime + bossTime 
-    momentRecorded: Date    // time and date this score was achieved, UTC
-    steamId: String         // steamID if using steam, defaults to '0' if not 
-    eventName: String       // name of exhibition if applicable, null if none
     */
 
     const response = {
