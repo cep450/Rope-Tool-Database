@@ -12,7 +12,8 @@ const RTScore = mongoose.model('RTScore');
 const regAlphanumeric = new RegExp(/[^a-zA-Z0-9 ]/g);   // allow only letters, numbers, and spaces 
 const regAlpha = new RegExp(/[^a-zA-Z]/g);              // allow only letters 
 const regNumeric = new RegExp(/[^0-9]/g);               // allow only digits 
-const regVersionName = new RegExp(/[^a-zA-Z0-9 .]/g);   //version names that will include '.'
+const regVersionName = new RegExp(/[^a-zA-Z0-9 .]/g);   // version names that will include '.'
+const regContact = new RegExp(/[^a-zA-Z0-9._]/g);		// username validation
 
 // configure templating to hbs
 app.set('view engine', 'hbs');
@@ -73,6 +74,7 @@ app.post('/submitscore', async (req, res) => {
     momentRecorded      momentRecorded: Date    // time and date this score was achieved, UTC
     steamId             steamId: String         // steamID if using steam, defaults to '0' if not 
     eventName           eventName: String       // name of exhibition if applicable, null if none
+    contact             contact: String       	// contact for prizes if at exhibition
     secret 
     */
 
@@ -112,7 +114,11 @@ app.post('/submitscore', async (req, res) => {
     //TODO check if there's any other data via SteamWorks we can use 
     var steamId = null;
 
+	// sanitize 
+	var contact = enforceRegex(req.body.contact, regContact);
+
     // event name: we enforce if an event is going on at this time and the score can be uploaded.
+	/*
     var eventName = req.body.eventName;
     if(req.body.eventName == null) {
         response.eventValidation = "NONE_PROVIDED";
@@ -123,6 +129,7 @@ app.post('/submitscore', async (req, res) => {
         // event: "" / "Score submitted under event leaderboard!" / "Event does not exist in database! Score submitted, but not to this event." / "This event is not currently running! Score submitted, but not to this event."
         eventName = "";
     }
+	*/
 
     const score = new RTScore({
         gameVersion: gameVersion,
@@ -133,7 +140,7 @@ app.post('/submitscore', async (req, res) => {
         totalTime: totalTime,
         momentRecorded: momentRecorded,
         steamId: steamId,
-        eventName: eventName
+        contact: contact
     });
 
     try {
@@ -162,6 +169,12 @@ function rejectScore(res, response) {
 app.get('/leaderboard', (req, res) => {
 
     console.log('got a get request to /leaderboard');
+
+	// dev view of leaderboard 
+	var dev = false;
+	if(req.query.secret == process.env.SECRET_DEV) {
+		dev = true;
+	}
 
     //get the data from the database
     const p = RTScore.find();
@@ -192,11 +205,16 @@ app.get('/leaderboard', (req, res) => {
                 totalTime: new Date(array[index].totalTime).toISOString().slice(14,23),
                 momentRecorded: score.momentRecorded.toISOString().slice(0,10),
                 steamId: null, //TODO we would convert between the steamid and the username here 
-                eventName: score.eventName
+				contact: score.contact
             }
         });
 
-        res.render('leaderboard', {scores: formattedScores});
+		if(dev) {
+			res.render('leaderboard', {scores: formattedScores, dev: dev});
+		} else {
+			res.render('leaderboard', {scores: formattedScores});
+		}
+       
     })
     .catch((err) => {
         console.log(err);

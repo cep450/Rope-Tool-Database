@@ -19,24 +19,42 @@
             <th>Level Time</th>
             <th>Boss Time</th>
             <th>Date</th>
-            <th>Game Version</th>
-            <th>Event</th>
+			{{#if dev}}
+				<th>Game Version</th>
+				<th>Contact</th>
+			{{/if}}
+            <!--<th>Event</th>0-->
         </tr>
 
 	{{#if scores}}
-        {{#each scores}}
-        <tr>
-            <td>{{name}}</td>
-            <!-- TODO could potentially get a bunch of info from someone's steamId like username, icon -->
-            <td>{{levelName}}</td>
-            <td>{{totalTime}}</td>
-            <td>{{levelTime}}</td>
-            <td>{{bossTime}}</td>
-            <td>{{momentRecorded}}</td>
-            <td>{{gameVersion}}</td>
-            <td>{{eventName}}</td>
-        </tr>
-        {{/each}}
+		{{#if dev}}
+			{{#each scores}}
+			<tr>
+				<td>{{name}}</td>
+				<!-- TODO could potentially get a bunch of info from someone's steamId like username, icon -->
+				<td>{{levelName}}</td>
+				<td>{{totalTime}}</td>
+				<td>{{levelTime}}</td>
+				<td>{{bossTime}}</td>
+				<td>{{momentRecorded}}</td>
+				<td>{{gameVersion}}</td>
+				<td>{{contact}}</td>
+			</tr>
+			{{/each}}
+		{{else}}
+			{{#each scores}}
+			<tr>
+				<td>{{name}}</td>
+				<!-- TODO could potentially get a bunch of info from someone's steamId like username, icon -->
+				<td>{{levelName}}</td>
+				<td>{{totalTime}}</td>
+				<td>{{levelTime}}</td>
+				<td>{{bossTime}}</td>
+				<td>{{momentRecorded}}</td>
+			</tr>
+			{{/each}}
+		{{/if}}
+        
 	{{else}}
 		<!-- the following appears only if null- for testing while not running the database -->
 		<tr>
@@ -46,7 +64,11 @@
             <td>00:00:00</td>
             <td>00:00:00</td>
             <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
+			{{#if dev}}
+				<td>Imagine RIT 2024</td>
+				<td>contact string</td>
+			{{/if}}
+            
         </tr>
 		<tr>
             <td>ABC</td>
@@ -55,7 +77,10 @@
             <td>00:00:00</td>
             <td>00:00:00</td>
             <td>Jan 1 1970</td>
-            <td>Imagine RIT 2024</td>
+            {{#if dev}}
+				<td>Imagine RIT 2024</td>
+				<td>contact string</td>
+			{{/if}}
         </tr>
 	{{/if}}
     </table>
